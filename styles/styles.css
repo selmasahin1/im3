@@ -1,0 +1,38 @@
+body {
+    background: #354151;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.upperTitle {
+    color: #E8CD5E;
+    font-family: 'Aldrich', sans-serif;
+    font-size: 64px;
+    font-weight: 400;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.lowerTitle {
+    color: #E8CD5E;
+    font-family: 'Inter';
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.lampIcon {
+    width: 70px;
+    height: 70px;
+    margin-right: 20px;
+}
+
+.cloudIcon {
+    width: 120px;
+}
