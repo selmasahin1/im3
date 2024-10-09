@@ -17,17 +17,9 @@ class IconChanger {
     }
 }
 
-class Graph {
-    constructor(element) {
-        this.element = document.querySelector(element);
-        this.createGraph();
-    }
-
-}
-
 document.addEventListener('DOMContentLoaded', function () {
-    new IconChanger('.lampIcon', 'icons/lamp.svg', 'icons/lampFilled.svg');
-    new IconChanger('.cloudIcon', 'icons/WolkeLeer.png', 'icons/WolkeFilled.png');
+    new IconChanger('.lampIcon', '/im3/icons/lamp.svg', '/im3/icons/lampFilled.svg');
+    new IconChanger('.cloudIcon', '/im3/icons/WolkeLeer.png', '/im3/icons/WolkeFilled.png');
 
 });
 
@@ -43,7 +35,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 data: [65, 59, 80, 81, 56, 55, 40],
                 fill: false,
                 borderColor: 'rgb(232, 205, 94)',
-                tension: 0.0
+                tension: 0.0,
+                yAxisID: 'A',
             },
             {
                 type: 'line',
@@ -51,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 data: [10, 16, 18, 22, 20, 18, 15],
                 fill: false,
                 borderColor: 'rgb(116, 126, 184)',
+                yAxisID: 'B',
                 tension: 0.0
             }, {
                 type: 'bar',
@@ -58,8 +52,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 data: [12, 6, 5, 20, 13, 0, 50],
                 fill: true,
                 backgroundColor: 'rgb(200, 202, 220)',
+                yAxisID: 'B',
                 tension: 0.0
             }]
+        },
+        options: {
+            scales: {
+                A: {
+                    type: 'linear',
+                    position: 'left',
+                },
+                B: {
+                    type: 'linear',
+                    position: 'right',
+                    ticks: {
+                        max: 1,
+                        min: 0
+                    }
+                }
+            }
         }
     });
 });
