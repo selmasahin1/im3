@@ -36,3 +36,13 @@ header {
 .cloudIcon {
     width: 120px;
 }
+
+.upperChart {
+    display: flex;
+    align-items: left;
+}
+
+.lowerChart {
+    display: flex;
+    align-items: right;
+}

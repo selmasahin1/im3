@@ -23,54 +23,121 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    const ctx = document.getElementById('myChart');
+// Display Chart
+let chart1 = null;
+let chart2 = null;
+let stromverbrauchData = [];
+let regenData = [];
+let temperaturData = [];
+let labels = [];
 
-    new Chart(ctx, {
-        data: {
-            labels: ['one', 'two', 'three', 'four', 'five', 'six', 'seven'],
-            datasets: [{
-                type: 'line',
-                label: 'Stromverbrauch',
-                data: [65, 59, 80, 81, 56, 55, 40],
-                fill: false,
-                borderColor: 'rgb(232, 205, 94)',
-                tension: 0.0,
-                yAxisID: 'A',
+const ctx = document.getElementById('myChart');
+const ctx2 = document.getElementById('myChart2');
+
+getApiData();
+
+chart1 = new Chart(ctx, {
+    data: {
+        labels: labels,
+        datasets: [{
+            type: 'line',
+            label: 'Stromverbrauch',
+            data: stromverbrauchData,
+            fill: false,
+            borderColor: 'rgb(232, 205, 94)',
+            tension: 0.0,
+            yAxisID: 'A',
+        }, {
+            type: 'bar',
+            label: 'Niederschlag',
+            data: regenData,
+            fill: true,
+            backgroundColor: 'rgb(200, 202, 220)',
+            yAxisID: 'B',
+            tension: 0.0
+        }]
+    },
+    options: {
+        scales: {
+            A: {
+                type: 'linear',
+                position: 'left',
             },
-            {
-                type: 'line',
-                label: 'Temperatur',
-                data: [10, 16, 18, 22, 20, 18, 15],
-                fill: false,
-                borderColor: 'rgb(116, 126, 184)',
-                yAxisID: 'B',
-                tension: 0.0
-            }, {
-                type: 'bar',
-                label: 'Niederschlag',
-                data: [12, 6, 5, 20, 13, 0, 50],
-                fill: true,
-                backgroundColor: 'rgb(200, 202, 220)',
-                yAxisID: 'B',
-                tension: 0.0
-            }]
-        },
-        options: {
-            scales: {
-                A: {
-                    type: 'linear',
-                    position: 'left',
-                },
-                B: {
-                    type: 'linear',
-                    position: 'right',
-                    ticks: {
-                        max: 1,
-                        min: 0
-                    }
+            B: {
+                type: 'linear',
+                position: 'right',
+                ticks: {
+                    max: 1,
+                    min: 0
                 }
             }
-        }
-    });
+        },
+        maintainAspectRatio: false,
+    }
 });
+
+chart2 = new Chart(ctx2, {
+    data: {
+        labels: labels,
+        datasets: [{
+            type: 'line',
+            label: 'Stromverbrauch',
+            data: stromverbrauchData,
+            fill: false,
+            borderColor: 'rgb(232, 205, 94)',
+            tension: 0.0,
+            yAxisID: 'A',
+        }, {
+            type: 'line',
+            label: 'Temperatur',
+            data: temperaturData,
+            fill: false,
+            borderColor: 'rgb(116, 126, 184)',
+            yAxisID: 'B',
+            tension: 0.0
+        }]
+    },
+    options: {
+        scales: {
+            A: {
+                type: 'linear',
+                position: 'left',
+            },
+            B: {
+                type: 'linear',
+                position: 'right',
+                ticks: {
+                    max: 1,
+                    min: 0
+                }
+            }
+        },
+        maintainAspectRatio: false,
+    }
+});
+
+function getApiData() {
+
+    const energyURL = "https://im3.selmasahin.ch/unloadEnergy.php";
+    const weatherURL = "https://im3.selmasahin.ch/unloadRain.php";
+
+    Promise.all([
+        fetch(energyURL).then(response => response.json()),
+        fetch(weatherURL).then(response => response.json())
+    ]).then(([energyData, weatherData]) => {
+
+        chart1.data.labels = energyData.map(entry => entry.datum);
+        chart2.data.labels = energyData.map(entry => entry.datum);
+
+        chart1.data.datasets[0].data = energyData.map(entry => parseFloat(entry.durchschnitt_energie));
+        chart2.data.datasets[0].data = energyData.map(entry => parseFloat(entry.durchschnitt_energie));
+
+        chart1.data.datasets[1].data = weatherData.map(entry => parseFloat(entry.anz_regen));
+        chart2.data.datasets[1].data = weatherData.map(entry => parseFloat(entry.durchschnitt_temp));
+
+        console.log(labels, stromverbrauchData, regenData, temperaturData);
+
+        chart1.update();
+        chart2.update();
+    });
+};
