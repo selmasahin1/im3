@@ -20,7 +20,6 @@ class IconChanger {
 document.addEventListener('DOMContentLoaded', function () {
     new IconChanger('.lampIcon', '/im3/icons/lamp.svg', '/im3/icons/lampFilled.svg');
     new IconChanger('.cloudIcon', '/im3/icons/WolkeLeer.png', '/im3/icons/WolkeFilled.png');
-
 });
 
 // Display Chart

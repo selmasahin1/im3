@@ -2,7 +2,6 @@
 
 $energy = include('extractEnergy.php');
 
-// Extract the last entry from the "Load" production type
 $productionTypes = ['Load', 'Solar', 'Wind offshore', 'Wind onshore'];
 $energyLoads = [];
 
