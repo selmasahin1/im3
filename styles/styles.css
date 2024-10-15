@@ -1,5 +1,23 @@
+:root {
+    font-size: 16px;
+    /* 1rem = 16px */
+
+    --background-color: #354151;
+    --primary-color: #E8CD5E;
+    --secondary-color: #C8CADC;
+
+    --font-family-primary: 'Aldrich', sans-serif;
+    --font-family-secondary: 'Inter', sans-serif;
+    --font-size-large: 4rem;
+    /* 64px */
+    --font-size-medium: 1.25rem;
+    /* 20px */
+    --font-size-small: 1rem;
+    /* 16px */
+}
+
 body {
-    background: #354151;
+    background: var(--background-color);
 }
 
 header {
@@ -10,9 +28,9 @@ header {
 }
 
 .upperTitle {
-    color: #E8CD5E;
-    font-family: 'Aldrich', sans-serif;
-    font-size: 64px;
+    color: var(--primary-color);
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-large);
     font-weight: 400;
     display: flex;
     flex-direction: row;
@@ -21,10 +39,11 @@ header {
 }
 
 .lowerTitle {
-    color: #E8CD5E;
-    font-family: 'Inter';
-    font-size: 20px;
+    color: var(--primary-color);
+    font-family: var(--font-family-secondary);
+    font-size: var(--font-size-medium);
     font-weight: 400;
+    margin-bottom: 20px;
 }
 
 .lampIcon {
@@ -38,11 +57,87 @@ header {
 }
 
 .upperChart {
-    display: flex;
-    align-items: left;
+    position: relative;
+    width: 60vw;
+    height: 65vh;
+    margin-bottom: 100px;
 }
 
 .lowerChart {
+    position: relative;
+    width: 60vw;
+    height: 65vh;
+    margin-left: auto;
+    margin-right: 30px;
+}
+
+.rain,
+.temperature {
     display: flex;
-    align-items: right;
+    margin: 0 30px;
+}
+
+.text {
+    color: var(--secondary-color);
+    padding: 20px;
+    width: 40vw;
+    font-family: var(--font-family-secondary);
+}
+
+#date {
+    border-radius: 20px;
+    background-color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+    padding: 10px;
+    font-size: var(--font-size-small);
+    font-family: var(--font-family-secondary);
+    box-sizing: border-box;
+}
+
+#date:hover {
+    background-color: #e0e0e0;
+}
+
+#date:focus {
+    background-color: #ffffff;
+    outline: none;
+}
+
+@media (max-width: 760px) {
+
+    .cloudIcon {
+        width: 100px;
+    }
+
+    .lampIcon {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+    }
+
+    .upperTitle {
+        font-size: 2rem;
+    }
+
+    .upperChart,
+    .lowerChart {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        width: 90vw;
+        margin-bottom: 50px;
+    }
+
+    .rain {
+        flex-direction: column;
+    }
+
+    .temperature {
+        flex-direction: column-reverse;
+    }
+
+    .text {
+        width: 90vw;
+    }
+
 }

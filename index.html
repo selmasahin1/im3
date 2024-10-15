@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +11,9 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Aldrich&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
         rel="stylesheet">
-    <title>Tarzan NL</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="icon" type="image/x-icon" href="/im3/icons/lamp.svg">
+    <title>Weer & Watt</title>
 </head>
 
 <body>
@@ -22,17 +23,50 @@
             Weer & Watt
             <img src="/im3/icons/WolkeLeer.png" alt="Wolke" class="cloudIcon">
         </div>
-        <div class="lowerTitle">
-            Stromverbrauch in Abhängigkeit vom Wetter
-        </div>
-        <input type="date" id="date" name="Datum"> 
+        <input type="date" id="date" name="Datum">
     </header>
-    <div class="chart-container" style="position: relative; height:60vh; width:60vw">
-        <canvas id="myChart"></canvas>
-    </div>
-    <div class="chart-container" style="position: relative; height:60vh; width:60vw">
-        <canvas id="myChart2"></canvas>
-    </div>
+    <main>
+        <div class="rain">
+            <div class="upperChart">
+                <canvas id="rainChart"></canvas>
+            </div>
+            <div class="text">
+                <div class="lowerTitle">
+                    Stromverbrauch in Abhängigkeit vom Regen
+                </div>
+                <div class="rainText">
+                    Generell kann man sagen, dass an regnerischen Tagen oder Tagen mit schlechtem Wetter mehr Strom
+                    verbraucht wird. Das liegt daran, dass mehr geheizt und durch das dunkle Wetter mehr Licht
+                    verbraucht wird. Der Stromverbrauch hängt auch vom Wochentag ab: unter der Woche, wenn die Menschen
+                    arbeiten, wird mehr Strom verbraucht, ob bei gutem oder schlechtem Wetter, da die Büros beleuchtet,
+                    geheizt/gekühlt werden und die technischen Geräte laufen. <br><br>Der Stromverbrauch am Wochenende
+                    verbraucht pro Haushalt weniger Strom, beispielsweise wenn der Fernseher läuft. Hierbei kann man
+                    jedoch sagen, dass bei Schlechtwetter wiederum mehr Strom verbraucht wird, da die Menschen eher
+                    zuhause bleiben und Licht, Heizung und ihre technischen Geräte verwenden.
+                </div>
+            </div>
+        </div>
+        <div class="temperature">
+            <div class="text">
+                <div class="lowerTitle">
+                    Stromverbrauch in Abhängigkeit von der Temperatur
+                </div>
+                <div class="temperatureText">
+                    Im Allgemeinen wird bei gutem, warmem Wetter weniger Strom verbraucht. Die Heizung muss nicht
+                    aufgedreht werden und je nach Lichtverhältnissen wird kein Licht angestellt. Der Stromverbrauch ist
+                    jedoch vom Wochentag abhängig: unter der Woche wird in den Büros und Geschäften viel Strom
+                    verbraucht für Heizung/Klimaanlage, Licht und die technischen Geräte, wie Computer. <br><br> Am Wochenende
+                    wird pro Haushalt weniger Strom verbraucht, da beispielsweise nur der Fernseher läuft. Besonders bei
+                    Schönwetter bleiben am Wochenende weniger Leute zuhause, was den Stromverbrauch weiter reduziert.
+                </div>
+            </div>
+
+            <div class="lowerChart">
+                <canvas id="temperaturChart"></canvas>
+            </div>
+
+        </div>
+    </main>
 
     <script src="scripts/script.js"></script>
 </body>

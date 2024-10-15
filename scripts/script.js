@@ -31,10 +31,19 @@ let regenData = [];
 let temperaturData = [];
 let labels = [];
 
-const ctx = document.getElementById('myChart');
-const ctx2 = document.getElementById('myChart2');
+const ctx = document.getElementById('rainChart');
+const ctx2 = document.getElementById('temperaturChart');
+const dateInput = document.getElementById('date');
 
-getApiData();
+const today = new Date();
+const yyyy = today.getFullYear();
+const mm = String(today.getMonth() + 1).padStart(2, '0');
+const dd = String(today.getDate()).padStart(2, '0');
+const formattedToday = `${yyyy}-${mm}-${dd}`;
+dateInput.value = formattedToday;
+
+
+getApiData(dateInput.value);
 
 chart1 = new Chart(ctx, {
     data: {
@@ -62,15 +71,35 @@ chart1 = new Chart(ctx, {
             A: {
                 type: 'linear',
                 position: 'left',
+                title: {
+                    display: true,
+                    text: 'Stromverbrauch in kWh',
+                    color: 'rgb(200, 202, 220)',
+                },
+                ticks: {
+                    color: 'rgb(200, 202, 220)',
+                }
             },
             B: {
                 type: 'linear',
                 position: 'right',
+                title: {
+                    display: true,
+                    text: 'Niederschlag in mm',
+                    color: 'rgb(200, 202, 220)'
+                },
                 ticks: {
-                    max: 1,
-                    min: 0
+                    color: 'rgb(200, 202, 220)',
                 }
-            }
+            },
+            x: {
+                title: {
+                    color: 'rgb(200, 202, 220)',
+                },
+                ticks: {
+                    color: 'rgb(200, 202, 220)',
+                }
+            },
         },
         maintainAspectRatio: false,
     }
@@ -102,32 +131,67 @@ chart2 = new Chart(ctx2, {
             A: {
                 type: 'linear',
                 position: 'left',
+                title: {
+                    display: true,
+                    text: 'Stromverbrauch in kWh',
+                    color: 'rgb(200, 202, 220)',
+                },
+                ticks: {
+                    color: 'rgb(200, 202, 220)',
+                }
             },
             B: {
                 type: 'linear',
                 position: 'right',
+                title: {
+                    display: true,
+                    text: 'Temperaur in °C',
+                    color: 'rgb(200, 202, 220)'
+                },
                 ticks: {
-                    max: 1,
-                    min: 0
+                    color: 'rgb(200, 202, 220)',
                 }
-            }
+            },
+            x: {
+                title: {
+                    color: 'rgb(200, 202, 220)',
+                },
+                ticks: {
+                    color: 'rgb(200, 202, 220)',
+                }
+            },
         },
         maintainAspectRatio: false,
     }
 });
 
-function getApiData() {
+dateInput.addEventListener('change', function () {
+    getApiData(dateInput.value);
+});
 
-    const energyURL = "https://im3.selmasahin.ch/unloadEnergy.php";
-    const weatherURL = "https://im3.selmasahin.ch/unloadRain.php";
+function formatLabels(data) {
+    const daysOfWeek = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+    return data.map(entry => {
+        const date = new Date(entry.datum);
+        const day = daysOfWeek[date.getUTCDay()];
+        const formattedDate = `${day} ${date.getUTCDate()}.${date.getUTCMonth() + 1}.`;
+        return formattedDate;
+    });
+}
+
+function getApiData(date) {
+
+    const energyURL = "https://im3.selmasahin.ch/unloadEnergy.php?date=" + date;
+    const weatherURL = "https://im3.selmasahin.ch/unloadRain.php?date=" + date;
+
 
     Promise.all([
         fetch(energyURL).then(response => response.json()),
         fetch(weatherURL).then(response => response.json())
     ]).then(([energyData, weatherData]) => {
 
-        chart1.data.labels = energyData.map(entry => entry.datum);
-        chart2.data.labels = energyData.map(entry => entry.datum);
+        chart1.data.labels = formatLabels(energyData);
+        chart2.data.labels = formatLabels(energyData);
 
         chart1.data.datasets[0].data = energyData.map(entry => parseFloat(entry.durchschnitt_energie));
         chart2.data.datasets[0].data = energyData.map(entry => parseFloat(entry.durchschnitt_energie));
@@ -135,7 +199,6 @@ function getApiData() {
         chart1.data.datasets[1].data = weatherData.map(entry => parseFloat(entry.anz_regen));
         chart2.data.datasets[1].data = weatherData.map(entry => parseFloat(entry.durchschnitt_temp));
 
-        console.log(labels, stromverbrauchData, regenData, temperaturData);
 
         chart1.update();
         chart2.update();

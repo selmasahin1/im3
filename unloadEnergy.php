@@ -14,7 +14,7 @@ header('Content-Type: application/json');
 try {
   $pdo = new PDO($dsn, $username, $password, $options);
 
-  $sql = "SELECT DATE(created) AS datum, ROUND(AVG(`load`), 2) AS durchschnitt_energie FROM energiedaten WHERE created >= ? - INTERVAL 7 DAY GROUP BY DATE(created) ORDER BY datum ASC";
+  $sql = "SELECT DATE(created) AS datum, ROUND(SUM(`load`), 2) AS durchschnitt_energie FROM energiedaten WHERE created >= ? - INTERVAL 7 DAY GROUP BY DATE(created) ORDER BY datum ASC";
   $stmt = $pdo->prepare($sql);
   $stmt->execute([$date]);
   $results = $stmt->fetchAll();
