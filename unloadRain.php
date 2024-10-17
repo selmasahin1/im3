@@ -13,9 +13,13 @@ header('Content-Type: application/json');
 try {
     $pdo = new PDO($dsn, $username, $password, $options);
 
-    $sql = "SELECT DATE(erstellt) AS datum, ROUND(SUM(schauer), 2) AS anz_regen, ROUND(AVG(temperatur), 2) AS durchschnitt_temp FROM wetterdaten WHERE erstellt >= ? - INTERVAL 7 DAY GROUP BY DATE(erstellt) ORDER BY datum ASC";
+    $sql = "SELECT DATE(erstellt) AS datum, ROUND(SUM(schauer), 2) AS anz_regen, ROUND(AVG(temperatur), 2) AS durchschnitt_temp 
+    FROM wetterdaten 
+    WHERE erstellt BETWEEN DATE_SUB(?, INTERVAL 6 DAY) AND DATE_ADD(?, INTERVAL 1 DAY) 
+    GROUP BY DATE(erstellt) 
+    ORDER BY datum ASC";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([$date]);
+    $stmt->execute([$date, $date]);
     $results = $stmt->fetchAll();
 
 
